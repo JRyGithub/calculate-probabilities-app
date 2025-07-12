@@ -1,5 +1,6 @@
 import './App.css';
+import Layout from './infrastructure/layout';
 
-const App = () => <span>Init Commit</span>;
+const App = () => <Layout />;
 
 export default App;

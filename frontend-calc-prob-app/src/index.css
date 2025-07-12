@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -115,6 +115,27 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-yellow-100 text-foreground;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .brutalist-border-large {
+    @apply border-8 border-black shadow-[12px_12px_0px_0px_#000];
+  }
+  .brutalist-border-small {
+    @apply border-4 border-black shadow-[8px_8px_0px_0px_#000];
+  }
+  .brutalist-text {
+    @apply font-black uppercase tracking-wide text-2xl text-3xl;
+  }
+  .brutalist-hover {
+    @apply transition-all duration-100 hover:shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1;
   }
 }
