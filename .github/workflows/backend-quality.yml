@@ -1,0 +1,38 @@
+name: Backend Code Quality
+
+on:
+  push:
+    branches: [main]
+    paths: ["backend-calc-prob-app/**"]
+  pull_request:
+    branches: [main]
+    paths: ["backend-calc-prob-app/**"]
+
+jobs:
+  backend-quality:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend-calc-prob-app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run tests (if any)
+        run: dotnet test --no-build --configuration Release --verbosity normal
