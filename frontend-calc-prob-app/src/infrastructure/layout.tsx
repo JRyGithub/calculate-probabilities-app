@@ -1,5 +1,6 @@
 import SubHeading from '@/components/shared/sub-heading';
 import Title from '@/components/shared/title';
+import CalculationResult from '@/features/calculation-result/calculation-result';
 import Calculator from '@/features/calculator/calculator';
 
 /**
@@ -15,6 +16,7 @@ const Layout = () => {
       <SubHeading>Calculate probabilities with ease!</SubHeading>
       <section className='w-full h-full flex justify-center items-center'>
         <Calculator />
+        <CalculationResult />
       </section>
     </section>
   );

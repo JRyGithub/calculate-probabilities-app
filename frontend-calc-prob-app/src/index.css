@@ -138,4 +138,13 @@
   .brutalist-hover {
     @apply transition-all duration-100 hover:shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1;
   }
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .no-spinner[type=number] {
+    -moz-appearance: textfield;
+  }
 }
