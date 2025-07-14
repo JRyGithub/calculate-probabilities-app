@@ -1,6 +1,44 @@
 @backend_calc_prob_app_HostAddress = http://localhost:5014
 
-GET {{backend_calc_prob_app_HostAddress}}/weatherforecast/
+### Test Intersection Calculation
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/intersection
+Content-Type: application/json
+
+{
+  "A": 0.5,
+  "B": 0.5
+}
+
+### Test Union Calculation
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/union
+Content-Type: application/json
+
+{
+  "A": 0.5,
+  "B": 0.5
+}
+
+### Test Invalid Probability (should fail validation)
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/intersection
+Content-Type: application/json
+
+{
+  "A": 1.5,
+  "B": -0.2
+}
+
+
+### Test Invalid Probability (should fail validation)
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/intersection
+Content-Type: application/json
+
+{
+  "A": 0.5,
+  "B": -0.2
+}
+
+### Test OpenAPI Documentation
+GET {{backend_calc_prob_app_HostAddress}}/openapi/v1.json
 Accept: application/json
 
 ###
