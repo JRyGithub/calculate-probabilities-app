@@ -21,7 +21,10 @@ const CalculatorFormSubmission = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 items-center'>
+    <div
+      className='flex flex-col gap-4 items-center'
+      data-testid='calculator-form-submission'
+    >
       <h5 className='text-xl font-bold italic'>
         Choose your calculation function:
       </h5>

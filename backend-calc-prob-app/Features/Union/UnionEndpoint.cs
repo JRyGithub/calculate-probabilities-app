@@ -12,25 +12,33 @@ public static class UnionEndpoint
         group.MapPost("/union", async ([FromBody] UnionRequest request, IUnionCalculator calculator, ICalculationLogger logger) =>
         {
             var validationResult = request.Validate()
-                .Rule(x => x.A >= 0 && x.A <= 1, "A must be between 0 and 1")
-                .Rule(x => x.B >= 0 && x.B <= 1, "B must be between 0 and 1")
-                .Build();
+                 .Rule(x => x.A != 0 || x.B != 0, "At least one of A or B must be non-zero")
+                 .Rule(x => x.A >= 0 && x.A <= 1, "A must be between 0 and 1")
+                 .Rule(x => x.B >= 0 && x.B <= 1, "B must be between 0 and 1")
+                 .Build();
+
+            UnionResult unionResult = new UnionResult();
 
             if (!validationResult.IsValid)
             {
-                await logger.LogCalculationAsync(CalculationName, request, validationResult.Errors);
-                return Results.BadRequest(validationResult.Errors);
+                await logger.LogCalculationAsync(CalculationName, request, validationResult.Errors, true);
+
+                unionResult.Errors = [.. validationResult.Errors];
+
+                return Results.BadRequest(unionResult);
             }
 
             var result = calculator.CalculateUnion(request.A, request.B);
 
             await logger.LogCalculationAsync(CalculationName, request, result);
 
-            return Results.Ok(result);
+            unionResult.Result = result;
+
+            return Results.Ok(unionResult);
         })
         .WithName("CalculateUnion")
         .WithSummary("Calculate the union of two probabilities")
-        .Produces<decimal>(200)
+        .Produces<UnionResult>(200)
         .ProducesValidationProblem(400);
     }
 }

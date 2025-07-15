@@ -2,7 +2,7 @@ import RHFInput from '@/components/shared/rhf-form';
 
 const CalculatorForm = () => {
   return (
-    <div className='flex w-full justify-center gap-4'>
+    <div className='flex flex-col md:flex-row w-full items-center justify-center gap-4'>
       <RHFInput
         name='probabilityA'
         type='number'

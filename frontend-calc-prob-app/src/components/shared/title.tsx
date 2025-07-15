@@ -9,7 +9,7 @@ const Title = ({ className, children }: PropsWithChildren<TitleProps>) => {
   return (
     <h1
       className={cn(
-        'text-6xl font-extrabold uppercase text-[#FF4911] tracking-wide',
+        'text-4xl md:text-6xl font-extrabold uppercase text-[#FF4911] tracking-wide',
         className
       )}
     >

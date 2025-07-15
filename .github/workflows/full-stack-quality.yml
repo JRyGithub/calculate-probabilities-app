@@ -44,6 +44,9 @@ jobs:
       - name: Build project
         run: bun run build
 
+      - name: Run unit tests
+        run: bun run test --run
+
   backend-quality:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.modified, 'backend-calc-prob-app/') || github.event_name == 'pull_request'
@@ -90,5 +93,5 @@ jobs:
           docker-compose up -d
           sleep 30
           curl -f http://localhost:3000 || exit 1
-          curl -f http://localhost:5000/weatherforecast || exit 1
+          curl -f http://localhost:5000/swagger/index.html || exit 1
           docker-compose down

@@ -6,13 +6,13 @@ using BackendCalcPropApp.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();              // Add this line
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // Your frontend URL
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IIntersectionCalculator, IntersectionCalculator>();
 builder.Services.AddScoped<IUnionCalculator, UnionCalculator>();
-builder.Services.AddSingleton<ICalculationLogger, CalculationLogger>();  // Add this line
+builder.Services.AddSingleton<ICalculationLogger, CalculationLogger>();
 
 var app = builder.Build();
 
@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();                          // Now this will work
+    app.UseSwagger();
     app.UseSwaggerUI();
 }
 else
@@ -42,3 +42,10 @@ app.UseCors("AllowFrontend");
 app.MapCalculatorEndpoints();
 
 app.Run();
+
+/// <summary>
+/// Partial Program class for integration testing.
+/// </summary>
+public partial class Program
+{
+}

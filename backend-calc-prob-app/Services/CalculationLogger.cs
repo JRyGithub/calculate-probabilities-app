@@ -7,20 +7,21 @@ public class CalculationLogger : ICalculationLogger
     private readonly string logFilePath;
     private readonly SemaphoreSlim semaphore;
 
-    public CalculationLogger()
+    public CalculationLogger(string? customLogDirectory = null)
     {
-        var logsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+        var logsDirectory = customLogDirectory ?? Path.Combine(Directory.GetCurrentDirectory(), "logs");
         Directory.CreateDirectory(logsDirectory);
 
         this.logFilePath = Path.Combine(logsDirectory, $"calculations_{DateTime.Now:yyyy-MM-dd}.log");
         this.semaphore = new SemaphoreSlim(1, 1);
     }
 
-    public async Task LogCalculationAsync(string calculationType, object inputs, object result)
+    public async Task LogCalculationAsync(string calculationType, object inputs, object result, bool? isError = false)
     {
         var logEntry = new
         {
             Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC"),
+            IsError = isError == true ? "ERROR" : "VALID",
             Calculation = calculationType,
             Inputs = inputs,
             Result = result,

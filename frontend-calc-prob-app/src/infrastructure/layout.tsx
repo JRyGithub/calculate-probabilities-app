@@ -11,10 +11,10 @@ import Calculator from '@/features/calculator/calculator';
  */
 const Layout = () => {
   return (
-    <section>
+    <section className='flex flex-col items-center justify-center gap-4'>
       <Title>Probabilities Calculator</Title>
       <SubHeading>Calculate probabilities with ease!</SubHeading>
-      <section className='w-full h-full flex justify-center items-center'>
+      <section className='w-full h-full flex flex-col justify-center items-center'>
         <Calculator />
         <CalculationResult />
       </section>

@@ -37,6 +37,23 @@ Content-Type: application/json
   "B": -0.2
 }
 
+### Test One Value Submitted (should fail validation)
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/intersection
+Content-Type: application/json
+
+{
+  "A": 0.5
+}
+
+### Test Nothing Submitted (should fail validation)
+POST {{backend_calc_prob_app_HostAddress}}/api/calculator/intersection
+Content-Type: application/json
+
+{
+  
+}
+
+
 ### Test OpenAPI Documentation
 GET {{backend_calc_prob_app_HostAddress}}/openapi/v1.json
 Accept: application/json

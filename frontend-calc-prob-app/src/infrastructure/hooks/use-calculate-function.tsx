@@ -1,32 +1,50 @@
+import type { CalculationRequest } from '@/core/requests/calculation-request';
+import type { CalculationResponse } from '@/core/responses/calculation-response';
 import type { ProbabilityCalculatorFormInputs } from '@/features/calculator/calculator.schema';
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
 
 type useCalculateFunctionProps = Omit<
   UseMutationOptions<
-    ProbabilityCalculatorFormInputs,
+    CalculationResponse,
     Error,
     ProbabilityCalculatorFormInputs
   >,
   'mutationFn'
 >;
+
 const useCalculateFunction = (options: useCalculateFunctionProps) => {
   return useMutation<
-    ProbabilityCalculatorFormInputs,
+    CalculationResponse,
     Error,
     ProbabilityCalculatorFormInputs
   >({
     mutationKey: ['calculationResult'],
     mutationFn: async (data: ProbabilityCalculatorFormInputs) => {
-      console.log('Calculating function with data:', data);
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(data);
-          return 43;
-        }, 1000);
-      });
-    },
-    onError: error => {
-      return console.error('Error calculating function:', error);
+      // TODO Ideally this URL should be an environment variable
+      // or a configuration setting.
+      // For now, it is hardcoded to the local backend URL.
+      const request: CalculationRequest = {
+        a: data.probabilityA,
+        b: data.probabilityB,
+      };
+
+      const response = await fetch(
+        `http://localhost:5014/api/calculator/${data.action}`,
+        {
+          method: 'POST',
+          body: JSON.stringify(request),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+
+      const body: CalculationResponse = await response.json();
+
+      return body;
     },
     ...options,
   });
