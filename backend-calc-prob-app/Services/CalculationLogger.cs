@@ -6,11 +6,26 @@ public class CalculationLogger : ICalculationLogger
 {
     private readonly string logFilePath;
     private readonly SemaphoreSlim semaphore;
+    private readonly bool isValidLogger;
 
     public CalculationLogger(string? customLogDirectory = null)
     {
         var logsDirectory = customLogDirectory ?? Path.Combine(Directory.GetCurrentDirectory(), "logs");
-        Directory.CreateDirectory(logsDirectory);
+
+        try
+        {
+            Directory.CreateDirectory(logsDirectory);
+            this.logFilePath = Path.Combine(logsDirectory, $"calculations_{DateTime.Now:yyyy-MM-dd}.log");
+            this.isValidLogger = true;
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException ||
+                                   ex is DirectoryNotFoundException ||
+                                   ex is IOException)
+        {
+            Console.WriteLine($"Warning: Could not create log directory '{logsDirectory}': {ex.Message}");
+            this.logFilePath = string.Empty;
+            this.isValidLogger = false;
+        }
 
         this.logFilePath = Path.Combine(logsDirectory, $"calculations_{DateTime.Now:yyyy-MM-dd}.log");
         this.semaphore = new SemaphoreSlim(1, 1);
@@ -18,6 +33,11 @@ public class CalculationLogger : ICalculationLogger
 
     public async Task LogCalculationAsync(string calculationType, object inputs, object result, bool? isError = false)
     {
+        if (!this.isValidLogger)
+        {
+            return;
+        }
+
         var logEntry = new
         {
             Date = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC"),

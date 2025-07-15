@@ -119,12 +119,17 @@ public class CalculationLoggerTests : IDisposable
     [Fact]
     public async Task LogCalculationAsync_InvalidDirectory_HandlesGracefully()
     {
-        var invalidLogger = new CalculationLogger("/invalid/path/that/does/not/exist");
+        // Create a path that definitely doesn't exist
+        var invalidPath = Path.Combine(Path.GetTempPath(), "nonexistent_directory_" + Guid.NewGuid().ToString());
+        var invalidLogger = new CalculationLogger(invalidPath);
 
+        // Should NOT throw an exception - logger handles it gracefully
         var exception = await Record.ExceptionAsync(async () =>
         {
             await invalidLogger.LogCalculationAsync("Test", new { A = 0.5 }, 0.5);
         });
+
+        Assert.Null(exception); // No exception should be thrown
     }
 
     [Fact]

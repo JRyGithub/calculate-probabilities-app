@@ -4,7 +4,7 @@ using BackendCalcPropApp.Features.Union;
 using BackendCalcPropApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine("Starting Backend Calculator Probability Application...");
+
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
