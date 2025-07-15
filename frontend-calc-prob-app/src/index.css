@@ -133,7 +133,7 @@
     @apply border-4 border-black shadow-[8px_8px_0px_0px_#000];
   }
   .brutalist-text {
-    @apply font-black uppercase tracking-wide text-2xl text-3xl;
+    @apply font-black uppercase tracking-wide  text-3xl;
   }
   .brutalist-hover {
     @apply transition-all duration-100 hover:shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1;
@@ -144,7 +144,8 @@
     margin: 0;
   }
 
-  .no-spinner[type=number] {
+  .no-spinner[type='number'] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
 }

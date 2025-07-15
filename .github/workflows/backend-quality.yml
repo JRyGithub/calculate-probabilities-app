@@ -3,18 +3,14 @@ name: Backend Code Quality
 on:
   push:
     branches: [main]
-    paths: ["backend-calc-prob-app/**"]
+    paths: ["backend-calc-prob-app/**", "backend-calc-prob-app.Tests/**"]
   pull_request:
     branches: [main]
-    paths: ["backend-calc-prob-app/**"]
+    paths: ["backend-calc-prob-app/**", "backend-calc-prob-app.Tests/**"]
 
 jobs:
   backend-quality:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./backend-calc-prob-app
 
     steps:
       - name: Checkout code
@@ -26,13 +22,20 @@ jobs:
           dotnet-version: "9.0.x"
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./backend-calc-prob-app/backend-calc-prob-app.csproj
+
+      - name: Restore test dependencies
+        run: dotnet restore ./backend-calc-prob-app.Tests/backend-calc-prob-app.Tests.csproj
 
       - name: Check code formatting
+        working-directory: ./backend-calc-prob-app
         run: dotnet format --verify-no-changes --verbosity diagnostic
 
       - name: Build project
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ./backend-calc-prob-app/backend-calc-prob-app.csproj --no-restore --configuration Release
 
-      - name: Run tests (if any)
-        run: dotnet test --no-build --configuration Release --verbosity normal
+      - name: Build test project
+        run: dotnet build ./backend-calc-prob-app.Tests/backend-calc-prob-app.Tests.csproj --no-restore --configuration Release
+
+      - name: Run unit tests
+        run: dotnet test ./backend-calc-prob-app.Tests/backend-calc-prob-app.Tests.csproj --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage" --logger:trx
