@@ -23,8 +23,11 @@ WORKDIR /app
 # Copy published application
 COPY --from=build /app/publish .
 
+# Create logs directory and set proper permissions
+RUN mkdir -p /app/logs
+
 # Create a non-root user
-RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Expose port 5000

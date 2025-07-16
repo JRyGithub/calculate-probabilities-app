@@ -2,8 +2,6 @@ import '@testing-library/jest-dom';
 import { afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
-console.log('Test setup file loaded!');
-
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();

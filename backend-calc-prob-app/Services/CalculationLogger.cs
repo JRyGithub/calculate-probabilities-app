@@ -27,7 +27,6 @@ public class CalculationLogger : ICalculationLogger
             this.isValidLogger = false;
         }
 
-        this.logFilePath = Path.Combine(logsDirectory, $"calculations_{DateTime.Now:yyyy-MM-dd}.log");
         this.semaphore = new SemaphoreSlim(1, 1);
     }
 
@@ -56,6 +55,13 @@ public class CalculationLogger : ICalculationLogger
         try
         {
             await File.AppendAllTextAsync(this.logFilePath, logLine + Environment.NewLine);
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException ||
+                                   ex is DirectoryNotFoundException ||
+                                   ex is IOException)
+        {
+            // Handle file write errors gracefully - don't break the application
+            Console.WriteLine($"Warning: Could not write to log file '{this.logFilePath}': {ex.Message}");
         }
         finally
         {
