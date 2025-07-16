@@ -13,6 +13,8 @@ type useCalculateFunctionProps = Omit<
 >;
 
 const useCalculateFunction = (options: useCalculateFunctionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5014';
+
   return useMutation<
     CalculationResponse,
     Error,
@@ -28,14 +30,11 @@ const useCalculateFunction = (options: useCalculateFunctionProps) => {
         b: data.probabilityB,
       };
 
-      const response = await fetch(
-        `http://localhost:5014/api/calculator/${data.action}`,
-        {
-          method: 'POST',
-          body: JSON.stringify(request),
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/calculator/${data.action}`, {
+        method: 'POST',
+        body: JSON.stringify(request),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
       if (!response.ok) {
         const errorText = await response.text();

@@ -8,6 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 COPY bun.lockb ./
 
+# Accept build argument for API URL
+ARG VITE_API_URL=http://localhost:5000
+ENV VITE_API_URL=$VITE_API_URL
+
 # Install Bun
 RUN npm install -g bun
 
